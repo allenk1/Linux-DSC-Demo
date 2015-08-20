@@ -1,9 +1,10 @@
 Clear-Host 
+
 $Cred = Get-Credential -Username:”root” -Message:”Enter root user password for Linux Host(s).”
 $Opt = New-CimSessionOption -UseSSL:$True -SkipCACheck:$True -SkipCNCheck:$True -SkipRevocationCheck:$True
 $LinuxServer = New-CimSession -Credential:$Cred –ComputerName: linuxhost-01 -Port:5986 -Authentication:Basic -SessionOption:$Opt 
-Configuration MyDSCDemo
-{
+
+Configuration MyDSCDemo {
    Import-DSCResource -Module nx
    
    Node "linuxhost-01"{  
@@ -111,6 +112,10 @@ fi
 
     }
 }
+
 MyDSCDemo -OutputPath:"C:\temp" 
-Write-Host “Configuration Loaded” 
 Start-DscConfiguration -CimSession:$LinuxServer -Path:”C:\temp” -Verbose –Wait
+
+
+
+
